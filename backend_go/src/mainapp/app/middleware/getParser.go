@@ -3,6 +3,7 @@ package middleware
 import (
     "log"
     "net/http"
+    "mainapp/app/middleware/errors/"
 )
 
 func getParser(r *http.Request) (keys []string, ok bool) {
@@ -14,7 +15,7 @@ func getParser(r *http.Request) (keys []string, ok bool) {
     keys, ok = r.URL.Query()["id"]
     if !ok || len(keys[0]) < 1 {
         log.Println("URL Query param missing")
-        //Raise an error here!
+        errors.getNoQueryError.getErr()
     }
     return
 }
