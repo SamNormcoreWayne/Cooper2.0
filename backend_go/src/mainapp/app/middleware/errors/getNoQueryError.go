@@ -5,7 +5,8 @@ import (
     "fmt"
 )
 
-func getErr() {
-    getError := errors.New("GET: No queries")
-    fmt.Println(getError)
+func getErr() (err error){
+    err = errors.New("GET: No queries")
+    fmt.Println(err)
+    return
 }

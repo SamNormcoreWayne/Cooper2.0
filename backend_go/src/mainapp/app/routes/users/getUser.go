@@ -22,7 +22,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
     /**
      * TODO: Encapsulate to getParser(). Done
      */
-    keys, ok := middleware.getParser(r)
+    keys, ok := middleware.getParser(r, []string{"id"})
 
     userID := keys[0]
     dbURL, _ := url.Parse(DB_BASE_URL)
