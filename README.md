@@ -6,11 +6,6 @@ Current version: 1.0.0
 
 This is the top level readme for the platform. See the [wiki] for more information on how to contribute.
 
-## Accessing Mr. Cooper
-Currently, this application is hosted on AWS.
-
-- Login: https://cooper.ccorrads.com/login
-
 ## Developing for the platform
 ### Getting Started
 This project uses [Docker](https://www.docker.com/) and Docker Compose as a way to easily get started. If you are unable to run Docker, you may follow the build instructions within each package to set up everything manually (frontend, backend, database)
