@@ -22,12 +22,25 @@ func getUser(w http.ResponseWriter, r *http.Request) {
     /**
      * TODO: Encapsulate to getParser(). Done
      */
-    keys, ok := middleware.getParser(r, []string{"id"})
+    keys, ok, parserErr := middleware.getParser(r, []string{"id"})
+
+    if (parserErr != nil)
+    /**
+     * Paser error handling
+     */
+    {
+        w.Header().Set(Type, contentT)
+        w.WriteHeader(http.StatusBadRequest)
+        /*
+         * Need a middleware to handle this error.
+         * Need a better design. Functions might be duplicated here.
+         */
+    }
 
     userID := keys[0]
     dbURL, _ := url.Parse(DB_BASE_URL)
     dbURL.Query().Set("users", userID)
-    res, err := http.Get(dbURL.String()) //make this line async
+    res, err := http.Get(dbURL.String()) //TODO: make this line async
     if err == nil {
         w.Header().Set(Type, contentT)
         w.WriteHeader(http.StatusOK)

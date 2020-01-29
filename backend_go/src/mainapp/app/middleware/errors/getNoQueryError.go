@@ -5,7 +5,7 @@ import (
     "fmt"
 )
 
-func getErr() (err error){
+func getNoQueryError() (err error){
     err = errors.New("GET: No queries")
     fmt.Println(err)
     return
