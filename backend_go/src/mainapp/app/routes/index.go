@@ -8,7 +8,7 @@ import (
 
 func router() {
     http.HandleFunc("/home", helloPage)
-    http.HandleFunc("/api/user/getUser", users.getUser)
+    go http.HandleFunc("/api/user/getUser", users.getUser) //Resolve concurrency
 }
 
 func helloPage(w http.ResponseWriter, r *http.Request) {

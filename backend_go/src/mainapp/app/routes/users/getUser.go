@@ -40,7 +40,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
     userID := keys[0]
     dbURL, _ := url.Parse(DB_BASE_URL)
     dbURL.Query().Set("users", userID)
-    res, err := http.Get(dbURL.String()) //TODO: make this line async
+    res, err := http.Get(dbURL.String()) //~TODO: make this line async~, concurrency shall not be resolved here, but it should be resolved when the req reaches our server.
     if err == nil {
         w.Header().Set(Type, contentT)
         w.WriteHeader(http.StatusOK)
