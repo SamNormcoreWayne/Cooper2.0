@@ -5,7 +5,8 @@ import (
     "errors"
 )
 
-func unexpectedMethodError(wrong string, right string) (err error){
+// UnexpectedMethodErr Handle unexpected method
+func UnexpectedMethodErr(wrong string, right string) (err error){
     errStr := fmt.Sprintf("Expeceted %s method but found %s", right, wrong)
     err = errors.New(errStr)
     return

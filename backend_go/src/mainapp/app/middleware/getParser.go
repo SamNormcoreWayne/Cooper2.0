@@ -3,23 +3,24 @@ package middleware
 import (
     "log"
     "net/http"
-    "mainapp/app/middleware/errors/"
+    "mainapp/app/middleware/errors"
 )
 
-func getParser(r *http.Request, keyNames []string) (keys []string, ok bool, err error) {
+// GetParser to get param from a URL that method is GET
+func GetParser(r *http.Request, keyNames []string) (keys []string, ok bool, err error) {
     if r.Method != "GET" {
         /*
          * Raise an error here
          */
-        return "", false, errors.unexpectedMethodErr(r.Method, "GET")
+        return nil, false, errors.UnexpectedMethodErr(r.Method, "GET")
     }
     for _, key := range keyNames {
         keys, ok = r.URL.Query()[key]
         if !ok || len(keys[0]) < 1 {
             // We expected URL has a query here
             log.Println("URL Query param missing")
-            return "", false, errors.getNoQueryError()
+            return nil, false, errors.GetNoQueryError()
         }
     }
-    return  keys, ok, nils
+    return  keys, ok, nil
 }

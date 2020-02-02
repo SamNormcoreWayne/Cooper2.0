@@ -2,7 +2,6 @@ package users
 
 import (
     "fmt"
-    "log"
     "net/http"
     "net/url"
     "encoding/json"
@@ -22,13 +21,12 @@ func getUser(w http.ResponseWriter, r *http.Request) {
     /**
      * TODO: Encapsulate to getParser(). Done
      */
-    keys, ok, parserErr := middleware.getParser(r, []string{"id"})
+    keys, _, parserErr := middleware.GetParser(r, []string{"id"})
 
-    if (parserErr != nil)
-    /**
-     * Paser error handling
-     */
-    {
+    if (parserErr != nil) {
+        /**
+        * Paser error handling
+        */
         w.Header().Set(Type, contentT)
         w.WriteHeader(http.StatusBadRequest)
         /*
@@ -55,3 +53,6 @@ func getUser(w http.ResponseWriter, r *http.Request) {
     }
     defer res.Body.Close()
 }
+
+// GetUser exports getUser()
+var GetUser = getUser
