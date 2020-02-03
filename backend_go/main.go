@@ -4,7 +4,8 @@ import (
     "fmt"
     "net/http"
     "log"
-    routers "mainapp/app/routes"
+    "io"
+    "mainapp/app/routes"
 )
 
 func main() {
@@ -13,9 +14,10 @@ func main() {
 
     fmt.Println("Starting server at port 9000")
 
-    http.HandleFunc("/", routers.Router)
-    err := http.ListenAndServe(":9000", nil)
-    if err != nil {
-        log.Fatal("ListenAndServer: ", err)
-    }
+    http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+        io.WriteString(w, "Hello World!")
+    })
+    http.HandleFunc("/home", routers.HelloPage)
+    http.HandleFunc("/api/user/getUser", routers.GetUser)
+    log.Fatal(http.ListenAndServe(":9000", nil))
 }

@@ -2,6 +2,7 @@ package users
 
 import (
     "fmt"
+    "io"
     "net/http"
     "net/url"
     "encoding/json"
@@ -33,25 +34,26 @@ func getUser(w http.ResponseWriter, r *http.Request) {
          * Need a middleware to handle this error.
          * Need a better design. Functions might be duplicated here.
          */
-    }
-
-    userID := keys[0]
-    dbURL, _ := url.Parse(DB_BASE_URL)
-    dbURL.Query().Set("users", userID)
-    res, err := http.Get(dbURL.String()) //~TODO: make this line async~, concurrency shall not be resolved here, but it should be resolved when the req reaches our server.
-    if err == nil {
-        w.Header().Set(Type, contentT)
-        w.WriteHeader(http.StatusOK)
-        json.NewEncoder(w).Encode(res.Body)
-        /*
-         * Check here in testing. I am not sure 
-         * whether res.Body could be parsered properly
-         */
+         io.WriteString(w, "GET /api/user/getUser StatusBadRequest")
     } else {
-        w.Header().Set(Type, contentT)
-        w.WriteHeader(http.StatusBadRequest)
+        userID := keys[0]
+        dbURL, _ := url.Parse(DB_BASE_URL)
+        dbURL.Query().Set("users", userID)
+        res, err := http.Get(dbURL.String()) //~TODO: make this line async~, concurrency shall not be resolved here, but it should be resolved when the req reaches our server.
+        if err == nil {
+            w.Header().Set(Type, contentT)
+            w.WriteHeader(http.StatusOK)
+            json.NewEncoder(w).Encode(res.Body)
+            /*
+            * Check here in testing. I am not sure 
+            * whether res.Body could be parsered properly
+            */
+        } else {
+            w.Header().Set(Type, contentT)
+            w.WriteHeader(http.StatusBadRequest)
+        }
+        defer res.Body.Close()
     }
-    defer res.Body.Close()
 }
 
 // GetUser exports getUser()
