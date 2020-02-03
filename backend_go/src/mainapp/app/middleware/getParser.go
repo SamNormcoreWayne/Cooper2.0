@@ -16,7 +16,8 @@ func GetParser(r *http.Request, keyNames []string) (keys []string, ok bool, err 
     }
     for _, key := range keyNames {
         keys, ok = r.URL.Query()[key]
-        if !ok || len(keys[0]) < 1 {
+        log.Println(keys, ok)
+        if !ok || len(keys) == 0 {
             // We expected URL has a query here
             log.Println("URL Query param missing")
             return nil, false, errors.GetNoQueryError()

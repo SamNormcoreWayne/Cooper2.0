@@ -30,8 +30,16 @@ func TestGetUser(t *testing.T) {
             }
             return resp, nil
         })
-    
+
     // Test no query error
+    noQueryError(t)
+
+    successGetUser(t)
+
+    failedGetUser(t)
+}
+
+func noQueryError(t *testing.T) {
     testHandler := http.HandlerFunc(routers.GetUser)
     testReq := httptest.NewRequest("GET", "/api/user/getUser", nil)
     testRes := httptest.NewRecorder()
@@ -43,6 +51,38 @@ func TestGetUser(t *testing.T) {
     }
     expectedBody := "GET /api/user/getUser StatusBadRequest"
     if string(body) ==  expectedBody {
-        t.Logf("Should fail to get user due to no query")
+        t.Logf("Should fail to get user due to no query: Success!")
+    }
+    defer res.Body.Close()
+}
+
+func successGetUser(t *testing.T) {
+    testHandler := http.HandlerFunc(routers.GetUser)
+    testReq := httptest.NewRequest("GET", "/api/user/getUser?userId=4", nil)
+    testRes := httptest.NewRecorder()
+
+    testHandler.ServeHTTP(testRes, testReq)
+
+    res := testRes.Result()
+    body, _ := ioutil.ReadAll(res.Body)
+    if res.StatusCode == 200 {
+        t.Logf("Should be successful to get user %s", string(body))
+    } else {
+        t.Errorf("Failed to get user")
+    }
+}
+
+func failedGetUser(t *testing.T) {
+    testHandler := http.HandlerFunc(routers.GetUser)
+    testReq := httptest.NewRequest("GET", "/api/user/getUser?userId=5", nil)
+    testRes := httptest.NewRecorder()
+
+    testHandler.ServeHTTP(testRes, testReq)
+
+    res := testRes.Result()
+    if res.StatusCode == 400 {
+        t.Logf("Should be failed to get user")
+    } else {
+        t.Errorf("Testing Failed")
     }
 }
